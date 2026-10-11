@@ -6,10 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/hooks/useAuth";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
-import Dashboard from "@/pages/Dashboard";
-import Transactions from "@/pages/Transactions";
-import Reports from "@/pages/Reports";
-import Profile from "@/pages/Profile";
+import { Dashboard, Profile, Reports, Transactions } from "@/lazyPages";
 
 export default function App() {
   return (

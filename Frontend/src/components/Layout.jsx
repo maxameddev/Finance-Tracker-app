@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { LayoutDashboard, ListOrdered, BarChart3, User, LogOut, Menu } from "lucide-react";
 
@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 import { ModeToggle } from "@/components/mode-toggle";
+import PageState from "@/components/PageState";
+import { prefetchPages } from "@/lazyPages";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -42,6 +44,9 @@ function NavLinks({ onNavigate }) {
 export default function Layout() {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
+
+  // Logged in: warm up the other pages in the background.
+  useEffect(() => prefetchPages(), []);
 
   return (
     <div className="min-h-screen md:flex">
@@ -84,7 +89,10 @@ export default function Layout() {
 
       <main className="flex-1 p-4 md:p-8">
         <div className="mx-auto max-w-5xl">
-          <Outlet />
+          {/* Sidebar stays visible while a page's code loads */}
+          <Suspense fallback={<PageState loading />}>
+            <Outlet />
+          </Suspense>
         </div>
       </main>
     </div>

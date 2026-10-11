@@ -180,6 +180,7 @@ export default function Transactions() {
       )}
 
       <TransactionDialog
+        key={editing?._id ?? "new"} // separate instance per transaction, so a closing dialog never swallows the next open
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         transaction={editing}
